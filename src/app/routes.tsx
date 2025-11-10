@@ -1,12 +1,30 @@
-import { createBrowserRouter } from 'react-router-dom';
+// src/App.tsx
+import { Routes, Route } from 'react-router-dom';
+import MainLayout from '../components/layout/MainLayout';
+import AuthLayout from '../components/layout/AuthLayout';
+import ScrollToTop from '../components/layout/ScrollToTop';
+
 import Home from '../pages/Home';
 import Catalog from '../pages/Catalog';
-import BookPage from '../pages/BookPage';
-import AdminBooks from '../pages/admin/AdminBooks';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Profile from '../pages/Profile';
 
-export const router = createBrowserRouter([
-    { path: '/', element: <Home /> },
-    { path: '/catalog', element: <Catalog /> },
-    { path: '/books/:id', element: <BookPage /> },
-    { path: '/admin/books', element: <AdminBooks /> },
-]);
+export default function App() {
+    return (
+        <>
+            <ScrollToTop />
+            <Routes>
+                <Route element={<MainLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="catalog" element={<Catalog />} />
+                    <Route path="profile" element={<Profile />} />
+                    {/* other site pages under the main chrome */}
+
+                    <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
+                </Route>
+            </Routes>
+        </>
+    );
+}

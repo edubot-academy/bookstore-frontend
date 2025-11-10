@@ -15,6 +15,29 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --color-primary: 248 106 86;
+  /* #F86A56 */
+  --color-primary-dark: 229 90 69;
+  /* #E55A45 */
+  --color-secondary: 251 242 238;
+  /* #FBF2EE */
+  --color-accent: 255 179 163;
+  /* #FFB3A3 */
+  --color-neutral: 246 242 247;
+  /* #F6F2F7 */
+  --color-dark: 45 42 68;
+  /* #2D2A44 */
+  --color-border: 229 231 235;
+  /* #E5E7EB */
+  --color-success: 76 175 80;
+  /* #4CAF50 */
+  --color-error: 239 68 68;
+  /* #EF4444 */
+  --color-text-main: 26 26 26;
+  /* #1A1A1A */
+  --color-text-muted: 107 114 128;
+  /* #6B7280 */
 }
 
 a {
@@ -29,8 +52,8 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* display: flex;
+  place-items: center; */
   min-width: 320px;
   min-height: 100vh;
 }
