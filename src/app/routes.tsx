@@ -1,8 +1,9 @@
 // src/App.tsx
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
-import AuthLayout from '../components/layout/AuthLayout';
+// import AuthLayout from '../components/layout/AuthLayout';
 import ScrollToTop from '../components/layout/ScrollToTop';
+import AdminPage from '../pages/admin/AdminPage';
 
 import Home from '../pages/Home';
 import Catalog from '../pages/Catalog';
@@ -23,6 +24,7 @@ export default function App() {
 
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
+                    <Route path="admin" element={<AdminPage />} />
                 </Route>
             </Routes>
         </>

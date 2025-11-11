@@ -7,6 +7,7 @@ export type User = {
     email: string;
     avatarUrl?: string | null;
     phone?: string | null;
+    role?: string;
 };
 
 type AuthContextShape = {
@@ -57,7 +58,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const login = React.useCallback(async (payload: { email: string; password: string }) => {
         try {
             const res = await apiLogin(payload) as any; // expect { token, user? }
-            if (res?.token) setToken(res.token);
+            if (res?.accessToken) setToken(res.accessToken);
             // Prefer user from login response if present to save a network hop
             const me: User = res?.user ?? (await getMe());
             setUser(me as User);
@@ -71,7 +72,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     const register = React.useCallback(async (payload: { fullName: string; email: string; password: string; phone?: string }) => {
         try {
             const res = await apiRegister(payload) as any; // expect { token, user? }
-            if (res?.token) setToken(res.token);
+            if (res?.accessToken) setToken(res.accessToken);
             const me: User = res?.user ?? (await getMe());
             setUser(me as User);
             return me;

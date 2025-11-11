@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { Book, Category, Author, Paginated } from './types';
+import type { OrderDTO, OrderStatus } from '../pages/admin/types';
 
 // Base API instance
 export const api = axios.create({
@@ -13,6 +14,17 @@ api.interceptors.request.use((cfg) => {
     if (token) cfg.headers.Authorization = `Bearer ${token}`;
     return cfg;
 });
+
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
 
 // --- Utility ---
 function unwrap<T>(res: { data: T }) {
@@ -75,6 +87,10 @@ export async function deleteBook(id: number) {
     return unwrap(await api.delete(`/admin/books/${id}`));
 }
 
+export async function listAdminBooks(params?: { page?: number; limit?: number }) {
+    return unwrap(await api.get<Paginated<Book>>('/admin/books', { params }));
+}
+
 export async function createCategory(payload: { name: string; slug: string }) {
     return unwrap(await api.post('/admin/categories', payload));
 }
@@ -87,6 +103,10 @@ export async function deleteCategory(id: number) {
     return unwrap(await api.delete(`/admin/categories/${id}`));
 }
 
+export async function listAdminCategories() {
+    return unwrap(await api.get<Category[]>('/admin/categories'));
+}
+
 export async function createAuthor(payload: { name: string; bio?: string }) {
     return unwrap(await api.post('/admin/authors', payload));
 }
@@ -97,6 +117,10 @@ export async function updateAuthor(id: number, payload: { name?: string; bio?: s
 
 export async function deleteAuthor(id: number) {
     return unwrap(await api.delete(`/admin/authors/${id}`));
+}
+
+export async function listAdminAuthors(params?: { page?: number; limit?: number; q?: string }) {
+    return unwrap(await api.get<Paginated<Author>>('/admin/authors', { params }));
 }
 
 // --- ADMIN: Uploads ---
@@ -131,17 +155,23 @@ export async function getStoreInfo() {
 }
 
 // --- ADMIN: Orders ---
+// add/adjust this helper
 export async function listOrders(params?: {
+    q?: string;
+    status?: OrderStatus | '';
+    dateFrom?: string; // ISO
+    dateTo?: string;   // ISO
     page?: number;
     limit?: number;
-    status?: string;
-    fulfillmentType?: string;
-    paymentStatus?: string;
-    dateFrom?: string;
-    dateTo?: string;
 }) {
-    return unwrap(await api.get('/admin/orders', { params }));
+    const { data } = await api.get<Paginated<OrderDTO>>('/admin/orders', {
+        params: Object.fromEntries(
+            Object.entries(params ?? {}).filter(([, v]) => v !== '' && v !== undefined && v !== null)
+        ),
+    });
+    return data;
 }
+
 
 export async function getOrderAdmin(id: number) {
     return unwrap(await api.get(`/admin/orders/${id}`));

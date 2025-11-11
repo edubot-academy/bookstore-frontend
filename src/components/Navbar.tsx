@@ -20,7 +20,6 @@ export default function Navbar(): JSX.Element {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
-
     const linkBase =
         'px-3 text-sm tracking-[0.2em] font-semibold text-black/90 hover:text-black';
     const active = 'text-primary';
@@ -116,6 +115,13 @@ export default function Navbar(): JSX.Element {
                                         >
                                             <Settings size={16} /> Settings
                                         </Link>
+                                        {user?.role === 'admin' && <Link
+                                            to="/admin"
+                                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-sm"
+                                            onClick={() => setProfileOpen(false)}
+                                        >
+                                            <Settings size={16} /> Admin
+                                        </Link>}
                                         <button
                                             className="flex w-full items-center gap-2 px-4 py-2 hover:bg-gray-50 text-left text-sm"
                                             onClick={async () => {
