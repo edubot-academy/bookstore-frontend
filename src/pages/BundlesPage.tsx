@@ -3,6 +3,7 @@ import { BookOpen, Layers, PackageCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { listBundles, type BundleDTO } from '../lib/api';
 import EmptyState from '../components/EmptyState';
+import SEO from '../components/SEO';
 
 export default function BundlesPage() {
     const [bundles, setBundles] = React.useState<BundleDTO[]>([]);
@@ -20,6 +21,11 @@ export default function BundlesPage() {
 
     return (
         <main className="mx-auto max-w-6xl px-4 py-8">
+            <SEO
+                title="Окуу китеп топтомдору"
+                description="EduBook окуу топтомдору: англис тили, программалоо, экзаменге даярдык жана окуу борборлору үчүн тандалган китептер."
+                path="/bundles"
+            />
             <div className="mb-7 rounded-2xl border border-edubot-line bg-white p-6 shadow-edubot-card">
                 <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div>

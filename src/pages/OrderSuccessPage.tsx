@@ -4,6 +4,7 @@ import { getOrder } from '../lib/api';
 import type { OrderDTO } from './admin/types';
 import { CheckCircle2, MessageCircle, PackageCheck, Phone } from 'lucide-react';
 import { fulfillmentTypeLabel } from '../lib/labels';
+import { whatsappUrl } from '../lib/business';
 
 const formatKgs = (value: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'KGS', maximumFractionDigits: 0 }).format(value);
@@ -18,7 +19,7 @@ export default function OrderSuccessPage() {
         enabled: Boolean(orderNumber),
     });
 
-    const whatsappText = encodeURIComponent(`Саламатсызбы, менин буйрутмам: ${orderNumber}`);
+    const whatsappText = `Саламатсызбы, менин буйрутмам: ${orderNumber}`;
 
     return (
         <main className="mx-auto max-w-4xl px-4 py-12">
@@ -79,7 +80,7 @@ export default function OrderSuccessPage() {
 
                 <div className="mt-8 flex flex-wrap gap-3">
                     <a
-                        href={`https://wa.me/996700123456?text=${whatsappText}`}
+                        href={whatsappUrl(whatsappText)}
                         target="_blank"
                         rel="noreferrer"
                         className="dashboard-button-primary inline-flex items-center gap-2"

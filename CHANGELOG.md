@@ -6,7 +6,153 @@ The active frontend principle remains:
 
 > The first usable product is a reliable education-focused bookstore. Rental, course bundles, EduBot Learning, EduPro CRM, AI recommendations, marketplace behavior, and advanced integrations stay inactive until the roadmap reaches those phases.
 
-## 2026-05-11 - Patch 8: Frontend Review Hardening
+## 2026-05-12 - v0.2.0: Marketing, SEO, and Visibility Pass
+
+### Version
+
+- Bumped frontend package version to `0.2.0`.
+- This is the second frontend release.
+
+### Brand and Asset Integration
+
+- Replaced legacy placeholder imagery with the new education-focused visual asset set.
+- Updated homepage sections to use the new:
+  - hero school supplies image
+  - category images
+  - article images
+  - promo banner image
+  - featured book image
+- Removed unused legacy Vite/React/sample bookstore assets from active imports.
+- Updated navbar/footer logo presentation for the new public logo.
+- Added Vercel SPA routing fallback in `vercel.json` so direct navigation and refreshes work on deployed client routes.
+
+### Homepage Funnel
+
+- Reworked the homepage into a stronger customer acquisition flow:
+  - hero
+  - guided book finder
+  - categories
+  - promo campaign
+  - new releases
+  - featured recommendations
+  - articles
+  - how-it-works/trust flow
+- Replaced internal/customer-unsafe wording such as `EduBook MVP`.
+- Rewrote promo copy from placeholder text into customer-facing campaign copy.
+- Added stronger WhatsApp consultation CTAs across homepage and campaign areas.
+- Added real operational contact details:
+  - phone: `+996 222 089 5285`
+  - pickup address: `Akhunbaev 129B, Бишкек`
+  - working hours: `Күн сайын 09:00-20:00`
+  - 2GIS search link for the pickup address
+
+### Guided Book Finder
+
+- Added a homepage guided book finder for:
+  - user type
+  - learning goal
+  - level intent
+  - language
+- Finder routes users into filtered catalog views using reliable backend-facing params.
+- Removed risky generated `gradeLevel` URL values after review because backend book records may not use exact Kyrgyz level strings.
+
+### Catalog Conversion and URL Fidelity
+
+- Added catalog quick filters for high-intent education categories:
+  - English learning
+  - exam prep
+  - programming
+  - children education
+- Added a WhatsApp help block beside catalog filters.
+- Improved catalog search placeholder copy.
+- Catalog URL state now preserves and restores:
+  - `minPrice`
+  - `maxPrice`
+  - `sort`
+  - `page`
+- Browser back/forward and shared catalog URLs now retain more of the active filter state.
+
+### Articles and Editorial Content
+
+- Added article detail pages at `/articles/:slug`.
+- Moved article metadata/content into shared `src/data/articles.ts`.
+- Article cards now open article detail pages instead of only catalog filter URLs.
+- Added practical, educational article content for:
+  - English workbook selection
+  - beginner programming books
+  - exam prep materials
+  - IELTS prep books in Bishkek
+  - learning center book bundle planning
+- Added article page CTAs to relevant catalog/bundle routes and WhatsApp consultation.
+- Added related article links.
+
+### SEO and Social Metadata
+
+- Updated `index.html` with production-facing:
+  - language
+  - title
+  - description
+  - theme color
+  - Open Graph defaults
+- Added reusable client-side `SEO` component for route metadata.
+- Added canonical domain configuration for:
+  - `https://edubook.edubot.it.com`
+- Added static SEO files:
+  - `public/robots.txt`
+  - `public/sitemap.xml`
+- Added JSON-LD structured data for:
+  - local business
+  - article pages
+  - book/product pages
+- Added Vercel bot-specific rewrites for social crawlers:
+  - `/articles/:slug`
+  - `/books/:id`
+- Added serverless metadata handlers:
+  - `api/article-meta.js`
+  - `api/product-meta.js`
+- These handlers provide crawler-readable HTML metadata for known article routes and backend-backed book routes.
+
+### Routing and Navigation
+
+- Reintroduced public bundle routes:
+  - `/bundles`
+  - `/bundles/:id`
+- Added bundle navigation where it supports the new marketing flow.
+- Removed the duplicate text cart link from the desktop/header nav while keeping icon cart access.
+- Fixed navbar active state so `Башкы бет` and `Макалалар` are not active at the same time.
+- `Макалалар` is active for:
+  - `/#articles`
+  - `/articles/...`
+
+### Business Info Centralization and Tracking Hooks
+
+- Added shared business configuration in `src/lib/business.ts`.
+- Replaced old placeholder phone/address values across visible customer pages.
+- Added lightweight `trackEvent` helper compatible with `gtag` or Plausible when analytics is installed later.
+- Added tracking hooks for key marketing interactions such as:
+  - hero catalog click
+  - hero WhatsApp click
+  - promo clicks
+  - guided finder submit
+  - catalog quick filters
+  - catalog WhatsApp help
+
+### Verification
+
+- Confirmed `npm run lint` passes.
+- Confirmed `npm run build` passes.
+- Confirmed Vercel metadata handler modules import cleanly in Node.
+- Current build warnings remain non-blocking stale browser data notices:
+  - `baseline-browser-mapping`
+  - `caniuse-lite` / Browserslist DB
+
+## 2026-05-11 - v0.1.0: First Frontend Release
+
+### Version
+
+- Marked the first frontend release as `0.1.0`.
+- Includes all pre-v0.2.0 work: repository audit, API contract alignment, customer bookstore flow, UX/UI direction, admin UI, localization, error handling, and frontend hardening.
+- This release stabilized the Phase 1 bookstore flow before the later marketing/SEO pass.
 
 ### Environment Configuration
 
@@ -52,9 +198,9 @@ The active frontend principle remains:
   - `baseline-browser-mapping`
   - `caniuse-lite` / Browserslist DB
 
-## 2026-05-10 - Repository Audit and Product Direction
+### 2026-05-10 - Repository Audit and Product Direction
 
-### Audit Result
+#### Audit Result
 
 - Audited the existing frontend as part of the EduBook plan.
 - Decision: continue with the repo instead of rebuilding from scratch.
@@ -66,7 +212,7 @@ The active frontend principle remains:
   - order update method did not match backend
   - admin order UI expected richer order responses than backend originally provided
 
-### Direction Adopted
+#### Direction Adopted
 
 - EduBook should feel like an education bookstore, not a generic ecommerce template.
 - Primary customer groups:
@@ -85,9 +231,9 @@ The active frontend principle remains:
   - manual confirmation by phone/WhatsApp
   - admin book/category/author/order management
 
-## 2026-05-10 - Patch 1: API Contract and Build Stabilization
+### 2026-05-10 - Patch 1: API Contract and Build Stabilization
 
-### Build Fixes
+#### Build Fixes
 
 - Fixed TypeScript/build errors so the frontend can compile.
 - Confirmed `npm run build` passes.
@@ -96,7 +242,7 @@ The active frontend principle remains:
   - Node is `20.17.0`
   - Vite recommends `20.19+` or `22.12+`
 
-### Book Type Alignment
+#### Book Type Alignment
 
 - Updated frontend assumptions to match backend `Book` shape.
 - Standardized active UI around:
@@ -111,7 +257,7 @@ The active frontend principle remains:
   - `image`
   - `url`
 
-### Admin Book Payload Alignment
+#### Admin Book Payload Alignment
 
 - Updated admin book save flow to match backend DTO.
 - Current admin book payload uses:
@@ -130,7 +276,7 @@ The active frontend principle remains:
   - `isPublished`
   - `sku`
 
-### Admin Order Contract
+#### Admin Order Contract
 
 - Updated admin order update call to use:
   - `PUT /admin/orders/:id`
@@ -142,7 +288,7 @@ The active frontend principle remains:
   - payment status
   - internal notes
 
-### Checkout DTO Alignment
+#### Checkout DTO Alignment
 
 - Checkout now sends backend-compatible create-order DTO:
   - `items`
@@ -156,9 +302,9 @@ The active frontend principle remains:
 - Email remains optional.
 - Phone remains required.
 
-## 2026-05-10 - Patch 2: Real Customer Bookstore Flow
+### 2026-05-10 - Patch 2: Real Customer Bookstore Flow
 
-### Active Customer Routes
+#### Active Customer Routes
 
 - Added/registered the real bookstore route flow:
   - `/`
@@ -174,7 +320,7 @@ The active frontend principle remains:
   - `/admin`
   - fallback not-found route
 
-### Catalog
+#### Catalog
 
 - Public catalog uses real backend `/api/books` data.
 - Catalog supports backend-facing query/filter concepts such as:
@@ -196,7 +342,7 @@ The active frontend principle remains:
   - category
   - stock
 
-### Book Detail
+#### Book Detail
 
 - Added real book detail page at `/books/:id`.
 - Displays:
@@ -219,7 +365,7 @@ The active frontend principle remains:
 - Supports add to cart.
 - Supports WhatsApp question link.
 
-### Cart
+#### Cart
 
 - Added local frontend cart state.
 - Cart persists with `localStorage`.
@@ -231,7 +377,7 @@ The active frontend principle remains:
   - checkout navigation
 - Cart clears only after successful backend order creation.
 
-### Checkout
+#### Checkout
 
 - Added checkout form.
 - Supports:
@@ -245,7 +391,7 @@ The active frontend principle remains:
 - Checkout posts to backend order creation endpoint.
 - Checkout displays backend validation errors more clearly after later error handling improvements.
 
-### Order Success
+#### Order Success
 
 - Added order success page.
 - Reads order number from route param.
@@ -260,9 +406,9 @@ The active frontend principle remains:
   - WhatsApp follow-up link
 - Keeps MVP expectation clear: team confirms availability and delivery/pickup manually.
 
-## 2026-05-10 - EduBook UX/UI Direction
+### 2026-05-10 - EduBook UX/UI Direction
 
-### Visual Direction
+#### Visual Direction
 
 - Adopted EduBot ecosystem-inspired visual tokens.
 - Tailwind theme includes:
@@ -294,7 +440,7 @@ The active frontend principle remains:
   - `dashboard-button-primary-lg`
   - `dashboard-button-secondary`
 
-### Customer UI Improvements
+#### Customer UI Improvements
 
 - Updated customer-facing pages to use a more education-focused tone.
 - Improved:
@@ -319,7 +465,7 @@ The active frontend principle remains:
   - pickup or delivery
   - WhatsApp/phone confirmation acceptable
 
-### Mobile and Responsive Improvements
+#### Mobile and Responsive Improvements
 
 - Improved responsive layouts across customer and admin pages.
 - Added compact but readable admin tab layout.
@@ -327,9 +473,9 @@ The active frontend principle remains:
 - Improved grid behavior for book cards and admin panels.
 - Added loading skeletons and empty states where useful.
 
-## 2026-05-10 - Admin UI Improvements
+### 2026-05-10 - Admin UI Improvements
 
-### Admin Shell
+#### Admin Shell
 
 - Improved admin page visual hierarchy.
 - Added icon-based tabs.
@@ -343,7 +489,7 @@ The active frontend principle remains:
   - settings notice
 - Later-phase Rentals/Bundles tabs are no longer active in navigation.
 
-### Books Admin
+#### Books Admin
 
 - Book form now supports core bookstore data:
   - title
@@ -365,7 +511,7 @@ The active frontend principle remains:
 - Category is now required in the UI to match backend validation.
 - Cover image upload uses backend admin upload endpoint.
 
-### Orders Admin
+#### Orders Admin
 
 - Orders table displays:
   - order number
@@ -392,19 +538,19 @@ The active frontend principle remains:
   - internal notes
 - Admin order update uses backend `PUT` endpoint.
 
-### Categories and Authors Admin
+#### Categories and Authors Admin
 
 - Polished management screens for categories and authors.
 - Kept forms simple and aligned with backend endpoints.
 - Improved empty/loading/error states.
 
-### Dashboard
+#### Dashboard
 
 - Improved admin dashboard presentation.
 - Uses backend report/dashboard data when available.
 - Provides a cleaner operational overview for orders, stock, and sales.
 
-### Home CMS
+#### Home CMS
 
 - Home CMS tab is secondary for the MVP.
 - It now uses existing backend contract:
@@ -417,7 +563,7 @@ The active frontend principle remains:
   - featured book selection
 - Current customer flow does not depend on Home CMS to sell books.
 
-### Settings
+#### Settings
 
 - Settings tab no longer calls nonexistent `/admin/settings`.
 - It now displays read-only operational placeholders and explains:
@@ -425,11 +571,11 @@ The active frontend principle remains:
   - Telegram notification settings are optional
   - EduBot/EduPro/CRM integrations remain deferred
 
-## 2026-05-10 - Future-Use Component Polish
+### 2026-05-10 - Future-Use Component Polish
 
 The repo had old or inactive UI sections. Instead of deleting all of them, future-use components were polished so they remain visually compatible if reintroduced later.
 
-### Polished Future-Use Components
+#### Polished Future-Use Components
 
 - `ArticlesSection`
 - `CategoriesSection`
@@ -440,7 +586,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
 - `PromoBanner`
 - `TopBar`
 
-### Current Usage Decision
+#### Current Usage Decision
 
 - These components are not all part of the active customer route flow.
 - They are retained because they may be useful for:
@@ -451,16 +597,16 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - newsletter/contact capture
 - They should not be expanded into a CMS-heavy launch blocker.
 
-## 2026-05-10 - Deferred Rental and Bundle UI
+### 2026-05-10 - Deferred Rental and Bundle UI
 
-### Files Kept for Later
+#### Files Kept for Later
 
 - `src/pages/BundlesPage.tsx`
 - `src/pages/BundlePage.tsx`
 - `src/pages/admin/tabs/BundlesTab.tsx`
 - `src/pages/admin/tabs/RentalsTab.tsx`
 
-### Active Runtime Decision
+#### Active Runtime Decision
 
 - Public bundle routes were removed from active routing:
   - `/bundles`
@@ -468,36 +614,36 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
 - Admin Rentals/Bundles tabs were removed from active admin navigation.
 - Book detail no longer fetches course recommendations.
 
-### Reason
+#### Reason
 
 - Bundles and rentals are roadmap later-phase features.
 - Keeping them active would make the product look broader than the current MVP can safely support.
 - Files remain in the repo for later phases, but they are intentionally not part of the active Phase 1 user flow.
 
-## 2026-05-10 - Error Handling and Security-Related Frontend Changes
+### 2026-05-10 - Error Handling and Security-Related Frontend Changes
 
-### Error Handling
+#### Error Handling
 
 - Added improved error extraction for Axios/backend validation responses.
 - Frontend can now display backend messages instead of only generic Axios errors.
 - Checkout uses improved error extraction.
 - Register uses improved error extraction.
 
-### Registration UX
+#### Registration UX
 
 - Registration password input now requires minimum length 8.
 - This matches backend registration validation.
 - Register page messaging keeps account creation optional because guest checkout remains supported.
 
-### Upload UX
+#### Upload UX
 
 - Admin image upload remains tied to backend upload hardening.
 - Frontend accepts images through file inputs.
 - Backend now enforces image-only uploads.
 
-## 2026-05-10 - Kyrgyz UX Copy and Frontend Localization
+### 2026-05-10 - Kyrgyz UX Copy and Frontend Localization
 
-### Goal
+#### Goal
 
 - Localized user-facing frontend copy into professional, plain Kyrgyz.
 - Treated this as a UX copy/localization pass only.
@@ -510,7 +656,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - cart behavior
   - admin save/update behavior
 
-### Shared Label System
+#### Shared Label System
 
 - Added shared Kyrgyz label helpers in `src/lib/labels.ts`.
 - Centralized UI mappings for backend/API values:
@@ -526,7 +672,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - known backend error labels
 - Kept enum values unchanged in requests/responses while showing Kyrgyz labels in UI.
 
-### Public Customer Flow Localized
+#### Public Customer Flow Localized
 
 - Localized customer-facing routes:
   - home
@@ -556,7 +702,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - checkout validation hints
   - loading states
 
-### Admin UI Localized
+#### Admin UI Localized
 
 - Localized active admin surfaces:
   - admin dashboard
@@ -590,7 +736,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - cancelled
   - paid/unpaid/refunded
 
-### Future-Use Components Localized
+#### Future-Use Components Localized
 
 - Localized retained but inactive/future-use UI components so English copy does not leak if they are reintroduced:
   - `ArticlesSection`
@@ -604,7 +750,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
 - Kept their deferred product status clear in Kyrgyz copy.
 - Did not activate rental or bundle behavior.
 
-### Backend Error Display
+#### Backend Error Display
 
 - Updated frontend error handling to map known backend messages to Kyrgyz where possible.
 - Added frontend fallback labels for known backend messages such as:
@@ -617,7 +763,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - upload errors
 - After backend localization, frontend can display the Kyrgyz backend response directly for newly localized errors.
 
-### Intentionally Kept in English
+#### Intentionally Kept in English
 
 - Kept these user-facing or semi-user-facing terms where they are technical/common/product terms:
   - `EduBook`
@@ -638,7 +784,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - `Course ID`
 - Kept code identifiers, variable names, function names, route paths, API fields, and enum values in English.
 
-### Copy Style Decisions
+#### Copy Style Decisions
 
 - Used short, practical Kyrgyz suitable for:
   - students
@@ -659,7 +805,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - `Сактоо`
   - `Жокко чыгаруу`
 
-### Verification
+#### Verification
 
 - Ran `npm run build`.
 - Frontend build passes after Kyrgyz localization.
@@ -667,14 +813,14 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - local Node is `20.17.0`
   - Vite recommends `20.19+` or `22.12+`
 
-## 2026-05-10 - Follow-Up Kyrgyz UI Text Cleanup
+### 2026-05-10 - Follow-Up Kyrgyz UI Text Cleanup
 
-### Reason
+#### Reason
 
 - A stricter UI text scan found additional English still visible in rendered frontend surfaces.
 - This follow-up pass focused on visible text that was missed because some strings looked technical or belonged to inactive/future-use components.
 
-### Additional UI Text Replaced
+#### Additional UI Text Replaced
 
 - Replaced visible admin wording:
   - `EduBook Admin` -> `EduBook башкаруу панели`
@@ -700,7 +846,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - `avatar` alt text -> `Профиль сүрөтү`
   - Vite/React sample screen copy with neutral EduBook technical-check copy
 
-### Remaining English Intentionally Kept
+#### Remaining English Intentionally Kept
 
 - Brand/product and common technical terms remain where appropriate:
   - `EduBook`
@@ -716,7 +862,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - `Telegram`
 - Route names, enum values, imports, type names, function names, and API fields remain in English because they are implementation contracts, not UI copy.
 
-### Verification
+#### Verification
 
 - Ran `npm run build`.
 - Frontend build passes after the stricter UI text cleanup.
@@ -730,8 +876,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
 
 - `src/app/routes.tsx`
   - Active route registration.
-  - Phase 1 routes are customer bookstore routes and admin route.
-  - Later-phase bundle routes are currently inactive.
+  - Active routes include customer bookstore routes, articles, bundles, and admin route.
 - `src/main.tsx`
   - App bootstrap and providers.
 
@@ -740,7 +885,7 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
 - `src/lib/api.ts`
   - Central frontend API client.
   - Auth, books, catalog, orders, admin, homepage, uploads, rentals/bundles helper functions.
-  - Some later-phase helper functions remain but are not active in the current route flow.
+  - Some later-phase helper functions remain for admin/future workflows.
 - `src/lib/types.ts`
   - Shared public domain types.
 - `src/pages/admin/types/index.ts`
@@ -767,6 +912,12 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
   - Real backend-backed catalog.
 - `src/pages/BookPage.tsx`
   - Real backend-backed book detail page.
+- `src/pages/ArticlePage.tsx`
+  - Educational article detail page.
+- `src/pages/BundlesPage.tsx`
+  - Public bundle listing page.
+- `src/pages/BundlePage.tsx`
+  - Public bundle detail page.
 - `src/components/BookCard.tsx`
   - Catalog book card.
 - `src/components/SearchBar.tsx`
@@ -781,6 +932,10 @@ The repo had old or inactive UI sections. Instead of deleting all of them, futur
 - `src/components/layout/MainLayout.tsx`
 - `src/components/Navbar.tsx`
 - `src/components/Footer.tsx`
+- `src/components/SEO.tsx`
+  - Route metadata and structured data helper.
+- `src/lib/business.ts`
+  - Shared business contact, domain, address, and map configuration.
 
 ### Admin
 
@@ -811,13 +966,15 @@ Latest verified commands:
   - Frontend lint passes.
 - `npm run build`
   - Frontend build passes.
-  - Warning remains: local Node `20.17.0`; Vite recommends `20.19+` or `22.12+`.
+  - Current warnings are non-blocking stale browser data notices for `baseline-browser-mapping` and Browserslist/caniuse-lite.
 
 ## Known Frontend Risks and Remaining Work
 
 ### Before Launch
 
-- Upgrade Node to `20.19+` or `22.12+`.
+- Refresh stale browser data packages when convenient:
+  - `baseline-browser-mapping`
+  - Browserslist/caniuse-lite
 - Add browser smoke tests for:
   - catalog load
   - book detail load

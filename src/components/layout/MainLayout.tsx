@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import TopBar from '../../components/UI/TopBar';
+import { BUSINESS } from '../../lib/business';
 
 type MainLayoutProps = {
     /** Hide the top blue strip if needed (default true) */
@@ -17,7 +18,7 @@ const MainLayout: React.FC<React.PropsWithChildren<MainLayoutProps>> = ({
 }) => {
     return (
         <div className="min-h-screen bg-white text-black">
-            {withTopBar && <TopBar phone='+996 700 123 456' />}
+            {withTopBar && <TopBar phone={BUSINESS.phoneDisplay} />}
             <Navbar />
 
             {/* Page content */}

@@ -66,6 +66,12 @@ const ArrowBtn = ({ onClick, dir }: { onClick: () => void; dir: "prev" | "next" 
 );
 
 export default function FeaturedBookSection() {
+    if (FEATURED_ITEMS.length === 0) return null;
+
+    return <FeaturedBookCarousel />;
+}
+
+function FeaturedBookCarousel() {
     const [idx, setIdx] = React.useState(0);
     const item = FEATURED_ITEMS[idx];
     const go = React.useCallback((n: number) => {

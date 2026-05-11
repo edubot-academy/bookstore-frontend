@@ -1,7 +1,9 @@
 import React from "react";
 import { ArrowRight, CalendarDays, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import dealBook from "../../assets/deal_book.png";
+import promoBanner from "../../assets/promo_banner.png";
+import { whatsappUrl } from "../../lib/business";
+import { trackEvent } from "../../lib/analytics";
 
 type Promo = {
     title: string;
@@ -12,11 +14,11 @@ type Promo = {
     ctaUrl: string;
 };
 
-const PROMO: Promo = {
-    title: "Мектепке даярдык китептери жана окуу топтомдору",
-    sub: "Бул бөлүктү кийин мектепке даярдык, экзаменге даярдануу же курс баштоо топтомдору сыяктуу сезондук кампаниялар үчүн колдонуңуз.",
+const PROMO: Promo | null = {
+    title: "Жаңы окуу жылына даярдык топтомдору",
+    sub: "Англис тили, программалоо жана экзаменге даярдык китептерин бир жерден тандаңыз. Кампада барын жана алып кетүү убактысын WhatsApp аркылуу тез тактайбыз.",
     deadlineISO: "2026-09-01T09:00:00+06:00",
-    image: dealBook,
+    image: promoBanner,
     ctaText: "Окуу китептерин көрүү",
     ctaUrl: "/catalog?bookType=EXAM_PREP",
 };
@@ -45,7 +47,12 @@ function useCountdown(deadlineISO?: string) {
 }
 
 export default function PromoBanner() {
-    const { d, h, m, s } = useCountdown(PROMO.deadlineISO);
+    if (!PROMO) return null;
+    return <PromoBannerContent promo={PROMO} />;
+}
+
+function PromoBannerContent({ promo }: { promo: Promo }) {
+    const { d, h, m, s } = useCountdown(promo.deadlineISO);
     const blocks = [
         { label: "Күн", value: d },
         { label: "Саат", value: h },
@@ -63,10 +70,10 @@ export default function PromoBanner() {
                                 <CalendarDays className="h-4 w-4" aria-hidden="true" />
                                 EduBook сезондук кампаниясы
                             </p>
-                            <h3 className="mt-4 text-3xl font-semibold leading-tight md:text-[40px]">{PROMO.title}</h3>
-                            <p className="mt-4 max-w-[620px] text-sm leading-6 text-white/78">{PROMO.sub}</p>
+                            <h3 className="mt-4 text-3xl font-semibold leading-tight md:text-[40px]">{promo.title}</h3>
+                            <p className="mt-4 max-w-[620px] text-sm leading-6 text-white/78">{promo.sub}</p>
 
-                            {PROMO.deadlineISO ? (
+                            {promo.deadlineISO ? (
                                 <div className="mt-7 grid grid-cols-4 gap-3">
                                     {blocks.map((item) => (
                                         <div key={item.label} className="rounded-2xl border border-white/15 bg-white/10 p-3">
@@ -78,14 +85,15 @@ export default function PromoBanner() {
                             ) : null}
 
                             <div className="mt-7 flex flex-wrap gap-3">
-                                <Link to={PROMO.ctaUrl} className="dashboard-button-primary bg-white text-edubot-orange hover:bg-white">
-                                    {PROMO.ctaText}
+                                <Link to={promo.ctaUrl} onClick={() => trackEvent("promo_catalog_click")} className="dashboard-button-primary bg-white text-edubot-orange hover:bg-white">
+                                    {promo.ctaText}
                                     <ArrowRight className="h-4 w-4" aria-hidden="true" />
                                 </Link>
                                 <a
-                                    href="https://wa.me/996700123456"
+                                    href={whatsappUrl("Саламатсызбы, окуу топтому боюнча кеңеш керек.")}
                                     target="_blank"
                                     rel="noreferrer"
+                                    onClick={() => trackEvent("promo_whatsapp_click")}
                                     className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/15"
                                 >
                                     <MessageCircle className="h-4 w-4" aria-hidden="true" />
@@ -95,7 +103,7 @@ export default function PromoBanner() {
                         </div>
 
                         <div className="flex justify-center">
-                            <img src={PROMO.image} alt="" className="h-[240px] w-auto rounded-2xl object-contain md:h-[300px]" loading="lazy" />
+                            <img src={promo.image} alt="" className="h-[240px] w-auto rounded-2xl object-contain md:h-[300px]" loading="lazy" />
                         </div>
                     </div>
                 </div>

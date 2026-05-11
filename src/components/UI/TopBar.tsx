@@ -1,4 +1,5 @@
 import { MapPin, MessageCircle, Phone } from 'lucide-react';
+import { BUSINESS, whatsappUrl } from '../../lib/business';
 
 interface TopBarProps {
     phone: string;
@@ -13,8 +14,8 @@ function TopBar({ phone }: TopBarProps) {
                     <span className="font-medium">{phone}</span>
                 </a>
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-white/80">
-                    <span className="inline-flex items-center gap-1.5"><MapPin size={14} /> Бишкектен өзү алып кетүү</span>
-                    <a href="https://wa.me/996700123456" className="inline-flex items-center gap-1.5 text-white/80 hover:text-edubot-soft">
+                    <a href={BUSINESS.mapUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-white/80 hover:text-edubot-soft"><MapPin size={14} /> {BUSINESS.address}</a>
+                    <a href={whatsappUrl("Саламатсызбы, EduBook боюнча суроом бар.")} className="inline-flex items-center gap-1.5 text-white/80 hover:text-edubot-soft">
                         <MessageCircle size={14} /> WhatsApp аркылуу ырастоо
                     </a>
                 </div>

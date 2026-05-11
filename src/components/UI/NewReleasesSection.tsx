@@ -10,6 +10,8 @@ export default function NewReleasesSection() {
     });
     const books = data?.items ?? [];
 
+    if (!isLoading && (isError || books.length === 0)) return null;
+
     return (
         <section className="bg-white">
             <div className="mx-auto max-w-6xl px-4 py-16">
@@ -38,14 +40,6 @@ export default function NewReleasesSection() {
                         {Array.from({ length: 4 }).map((_, index) => (
                             <div key={index} className="h-[420px] animate-pulse rounded-2xl bg-edubot-surfaceAlt" />
                         ))}
-                    </div>
-                ) : isError ? (
-                    <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
-                        Китептер азыр жүктөлгөн жок.
-                    </div>
-                ) : books.length === 0 ? (
-                    <div className="rounded-2xl border border-edubot-line bg-edubot-surfaceAlt p-6 text-sm text-edubot-muted">
-                        Бул жерге чыгышы үчүн башкаруу бөлүмүнөн китеп кошуңуз.
                     </div>
                 ) : (
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

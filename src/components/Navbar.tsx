@@ -1,5 +1,5 @@
 import { useState, type JSX } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { User as UserIcon, ShoppingBag, Menu, X, LogOut, Settings, BookOpen } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useCart } from '../hooks/useCart';
@@ -10,19 +10,26 @@ type NavItem = { to: string; label: string; end?: boolean };
 const navItems: NavItem[] = [
     { to: '/', label: 'Башкы бет', end: true },
     { to: '/catalog', label: 'Китептер' },
-    { to: '/cart', label: 'Себет' },
+    { to: '/bundles', label: 'Топтомдор' },
+    { to: '/#articles', label: 'Макалалар' },
 ];
 
 export default function Navbar(): JSX.Element {
     const { user, logout } = useAuth();
     const { count } = useCart();
     const navigate = useNavigate();
+    const location = useLocation();
     const [open, setOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const linkBase = 'rounded-full px-4 py-2 text-sm font-semibold text-edubot-ink/80 transition hover:bg-edubot-surfaceAlt hover:text-edubot-dark';
     const active = 'bg-edubot-orange/10 text-edubot-orange';
 
     const closeDrawer = () => setOpen(false);
+    const isNavItemActive = (item: NavItem, isActive: boolean) => {
+        if (item.to === '/') return location.pathname === '/' && location.hash !== '#articles';
+        if (item.to === '/#articles') return (location.pathname === '/' && location.hash === '#articles') || location.pathname.startsWith('/articles');
+        return isActive;
+    };
 
     return (
         <nav className="sticky top-0 z-20 border-b border-edubot-line/80 bg-white/95 backdrop-blur">
@@ -37,7 +44,7 @@ export default function Navbar(): JSX.Element {
                         <Menu size={22} />
                     </button>
                     <Link to="/" className="flex shrink-0 items-center gap-3">
-                        <img src={bookstore_logo} alt="EduBook" className="h-12 w-12 rounded-full bg-edubot-dark" />
+                        <img src={bookstore_logo} alt="EduBook" className="h-12 w-12 rounded-full bg-white p-1 shadow-sm" />
                         <div className="hidden leading-tight sm:block">
                             <div className="text-lg font-bold text-edubot-dark">EduBook</div>
                             <div className="text-xs font-medium text-edubot-muted">Окуу китептери дүкөнү</div>
@@ -51,7 +58,7 @@ export default function Navbar(): JSX.Element {
                             <NavLink
                                 to={item.to}
                                 end={item.end}
-                                className={({ isActive }) => `${linkBase} ${isActive ? active : ''}`}
+                                className={({ isActive }) => `${linkBase} ${isNavItemActive(item, isActive) ? active : ''}`}
                             >
                                 {item.label}
                             </NavLink>
@@ -150,7 +157,7 @@ export default function Navbar(): JSX.Element {
                 >
                     <div className="flex items-center justify-between px-4 py-4 border-b">
                         <div className="flex items-center gap-2">
-                            <img src={bookstore_logo} alt="EduBook" className="h-10 w-10 rounded-full bg-edubot-dark" />
+                            <img src={bookstore_logo} alt="EduBook" className="h-10 w-10 rounded-full bg-white p-1 shadow-sm" />
                             <div>
                                 <span className="block font-semibold text-edubot-dark">EduBook</span>
                                 <span className="text-xs text-edubot-muted">Окуу үчүн китептер</span>
@@ -201,7 +208,7 @@ export default function Navbar(): JSX.Element {
                                 end={n.end}
                                 onClick={closeDrawer}
                                 className={({ isActive }) =>
-                                    `rounded-lg px-3 py-2 text-sm ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-gray-100'}`
+                                    `rounded-lg px-3 py-2 text-sm ${isNavItemActive(n, isActive) ? 'bg-primary/10 text-primary' : 'hover:bg-gray-100'}`
                                 }
                             >
                                 {n.label}
@@ -226,7 +233,7 @@ export default function Navbar(): JSX.Element {
                                 onClick={async () => {
                                     await logout();
                                     closeDrawer();
-                                    location.href = '/';
+                                    window.location.href = '/';
                                 }}
                             >
                                 Чыгуу

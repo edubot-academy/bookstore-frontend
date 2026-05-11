@@ -5,6 +5,7 @@ import { useCart } from '../hooks/useCart';
 import { CheckCircle2, MapPin, Phone, ShoppingBag } from 'lucide-react';
 import { getErrorMessage } from '../lib/errors';
 import { fulfillmentTypeLabel, paymentMethodLabel } from '../lib/labels';
+import { BUSINESS } from '../lib/business';
 
 type FulfillmentType = 'PICKUP' | 'DELIVERY';
 type PaymentMethod = 'CASH' | 'TRANSFER';
@@ -117,7 +118,7 @@ export default function CheckoutPage() {
                                     <input type="radio" checked={fulfillmentType === value} onChange={() => setFulfillmentType(value)} className="accent-primary" />
                                     <span>
                                         <span className="block font-medium text-edubot-ink">{fulfillmentTypeLabel(value)}</span>
-                                        <span className="text-xs text-edubot-muted">{value === 'PICKUP' ? 'Киевская 115, Бишкек' : 'Дарек телефон аркылуу такталат'}</span>
+                                        <span className="text-xs text-edubot-muted">{value === 'PICKUP' ? BUSINESS.address : 'Дарек телефон аркылуу такталат'}</span>
                                     </span>
                                 </label>
                             ))}

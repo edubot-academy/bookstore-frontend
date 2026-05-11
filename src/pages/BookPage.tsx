@@ -4,6 +4,8 @@ import { getBook } from '../lib/api';
 import { useCart } from '../hooks/useCart';
 import { MessageCircle, PackageCheck, ShoppingBag } from 'lucide-react';
 import { availabilityLabel, bookTypeLabel, stockText } from '../lib/labels';
+import { whatsappUrl } from '../lib/business';
+import SEO from '../components/SEO';
 
 export default function BookPage() {
     const { id } = useParams();
@@ -15,9 +17,31 @@ export default function BookPage() {
     const authors = b.authors?.map((author) => author.name).join(', ') || '-';
     const stock = b.stock ?? 0;
     const availability = availabilityLabel(stock);
-    const whatsappText = encodeURIComponent(`Саламатсызбы, "${b.title}" китеби боюнча суроом бар.`);
+    const whatsappText = `Саламатсызбы, "${b.title}" китеби боюнча суроом бар.`;
+    const bookSchema = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: b.title,
+        description: b.description || `${b.title} китеби EduBook каталогунда.`,
+        image: b.coverUrl,
+        brand: b.publisher || 'EduBook',
+        offers: {
+            "@type": "Offer",
+            priceCurrency: "KGS",
+            price: Number(b.price),
+            availability: stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        },
+    };
     return (
         <main className="mx-auto grid max-w-6xl gap-8 p-6 lg:grid-cols-[360px_1fr_280px]">
+            <SEO
+                title={`${b.title} - окуу китеби`}
+                description={`${b.title} китебин EduBook каталогунан караңыз. Баасы, деңгээли, тили жана кампада болушу боюнча маалымат.`}
+                path={`/books/${b.id}`}
+                image={b.coverUrl || "/bookstore_logo.svg"}
+                type="product"
+                structuredData={bookSchema}
+            />
             <div className="aspect-[3/4] overflow-hidden rounded-2xl border border-edubot-line bg-edubot-surface shadow-edubot-card">
                 <img
                     src={b.coverUrl || 'https://placehold.co/480x640?text=Китеп'}
@@ -71,7 +95,7 @@ export default function BookPage() {
                         <ShoppingBag size={16} /> Себетке кошуу
                     </button>
                     <a
-                        href={`https://wa.me/996700123456?text=${whatsappText}`}
+                        href={whatsappUrl(whatsappText)}
                         target="_blank"
                         rel="noreferrer"
                         className="dashboard-button-secondary inline-flex items-center justify-center gap-2"

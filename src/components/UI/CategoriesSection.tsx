@@ -2,10 +2,10 @@ import { type JSX, useRef } from 'react';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, A11y } from 'swiper/modules';
-import category_1 from '../../assets/category_1.png';
-import category_2 from '../../assets/category_2.png';
-import category_3 from '../../assets/category_3.png';
-import category_4 from '../../assets/category_1.png';
+import programmingIt from '../../assets/programming_it.png';
+import englishLearning from '../../assets/english_learning.png';
+import examPrep from '../../assets/exam_prep.png';
+import childrensEdu from '../../assets/childrens_edu.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
@@ -14,15 +14,17 @@ type Category = { id: number; title: string; image: string; url: string };
 // expect CATEGORIES to be provided from parent/file scope
 
 const CATEGORIES: Category[] = [
-    { id: 1, title: 'Программалоо жана IT', image: category_1, url: '/catalog?bookType=PROGRAMMING' },
-    { id: 2, title: 'Англис тили', image: category_2, url: '/catalog?bookType=LANGUAGE_LEARNING' },
-    { id: 3, title: 'Экзаменге даярдык', image: category_3, url: '/catalog?bookType=EXAM_PREP' },
-    { id: 4, title: 'Балдар билими', image: category_4, url: '/catalog?bookType=CHILDREN_EDUCATION' },
+    { id: 1, title: 'Программалоо жана IT', image: programmingIt, url: '/catalog?bookType=PROGRAMMING' },
+    { id: 2, title: 'Англис тили', image: englishLearning, url: '/catalog?bookType=LANGUAGE_LEARNING' },
+    { id: 3, title: 'Экзаменге даярдык', image: examPrep, url: '/catalog?bookType=EXAM_PREP' },
+    { id: 4, title: 'Балдар билими', image: childrensEdu, url: '/catalog?bookType=CHILDREN_EDUCATION' },
 ];
 
-export default function CategoriesSection(): JSX.Element {
+export default function CategoriesSection(): JSX.Element | null {
     const prevRef = useRef<HTMLButtonElement | null>(null);
     const nextRef = useRef<HTMLButtonElement | null>(null);
+
+    if (CATEGORIES.length === 0) return null;
 
     return (
         <section className="bg-white">
