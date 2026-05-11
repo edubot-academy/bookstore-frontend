@@ -11,6 +11,7 @@ const Login = lazy(() => import('../pages/Login'));
 const Register = lazy(() => import('../pages/Register'));
 const Profile = lazy(() => import('../pages/Profile'));
 const BookPage = lazy(() => import('../pages/BookPage'));
+const ArticlesPage = lazy(() => import('../pages/ArticlesPage'));
 const ArticlePage = lazy(() => import('../pages/ArticlePage'));
 const BundlesPage = lazy(() => import('../pages/BundlesPage'));
 const BundlePage = lazy(() => import('../pages/BundlePage'));
@@ -30,6 +31,7 @@ export default function App() {
                     <Route path="catalog" element={<Catalog />} />
                     <Route path="books" element={<Catalog />} />
                     <Route path="books/:id" element={<BookPage />} />
+                    <Route path="articles" element={<ArticlesPage />} />
                     <Route path="articles/:slug" element={<ArticlePage />} />
                     <Route path="bundles" element={<BundlesPage />} />
                     <Route path="bundles/:id" element={<BundlePage />} />

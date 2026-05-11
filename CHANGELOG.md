@@ -6,6 +6,26 @@ The active frontend principle remains:
 
 > The first usable product is a reliable education-focused bookstore. Rental, course bundles, EduBot Learning, EduPro CRM, AI recommendations, marketplace behavior, and advanced integrations stay inactive until the roadmap reaches those phases.
 
+## 2026-05-12 - v0.2.1: Articles Route Patch
+
+### Version
+
+- Bumped frontend package version to `0.2.1`.
+- This is a minor patch release for article navigation.
+
+### Routing and SEO
+
+- Added a real article listing page at `/articles`.
+- Updated navbar article navigation from the incorrect homepage anchor `/#articles` to `/articles`.
+- Updated article nav active-state logic for `/articles` and `/articles/...`.
+- Added `/articles` to `public/sitemap.xml`.
+- Confirmed no `/#articles` references remain.
+
+### Verification
+
+- Confirmed `npm run lint` passes.
+- Confirmed `npm run build` passes.
+
 ## 2026-05-12 - v0.2.0: Marketing, SEO, and Visibility Pass
 
 ### Version
@@ -114,14 +134,17 @@ The active frontend principle remains:
 
 ### Routing and Navigation
 
+- Added a real article listing route:
+  - `/articles`
 - Reintroduced public bundle routes:
   - `/bundles`
   - `/bundles/:id`
 - Added bundle navigation where it supports the new marketing flow.
 - Removed the duplicate text cart link from the desktop/header nav while keeping icon cart access.
+- Fixed navbar article navigation to use `/articles` instead of the homepage hash URL.
 - Fixed navbar active state so `Башкы бет` and `Макалалар` are not active at the same time.
 - `Макалалар` is active for:
-  - `/#articles`
+  - `/articles`
   - `/articles/...`
 
 ### Business Info Centralization and Tracking Hooks

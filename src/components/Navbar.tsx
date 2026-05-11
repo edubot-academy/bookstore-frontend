@@ -11,7 +11,7 @@ const navItems: NavItem[] = [
     { to: '/', label: 'Башкы бет', end: true },
     { to: '/catalog', label: 'Китептер' },
     { to: '/bundles', label: 'Топтомдор' },
-    { to: '/#articles', label: 'Макалалар' },
+    { to: '/articles', label: 'Макалалар' },
 ];
 
 export default function Navbar(): JSX.Element {
@@ -26,8 +26,8 @@ export default function Navbar(): JSX.Element {
 
     const closeDrawer = () => setOpen(false);
     const isNavItemActive = (item: NavItem, isActive: boolean) => {
-        if (item.to === '/') return location.pathname === '/' && location.hash !== '#articles';
-        if (item.to === '/#articles') return (location.pathname === '/' && location.hash === '#articles') || location.pathname.startsWith('/articles');
+        if (item.to === '/') return location.pathname === '/';
+        if (item.to === '/articles') return location.pathname.startsWith('/articles');
         return isActive;
     };
 
