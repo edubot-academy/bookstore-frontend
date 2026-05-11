@@ -6,6 +6,24 @@ The active frontend principle remains:
 
 > The first usable product is a reliable education-focused bookstore. Rental, course bundles, EduBot Learning, EduPro CRM, AI recommendations, marketplace behavior, and advanced integrations stay inactive until the roadmap reaches those phases.
 
+## 2026-05-12 - v0.2.2: Mobile Drawer Patch
+
+### Version
+
+- Bumped frontend package version to `0.2.2`.
+- This is a minor patch release for mobile navigation styling.
+
+### Mobile Navigation
+
+- Fixed the mobile drawer panel background appearing transparent.
+- Raised drawer overlay stacking context.
+- Made drawer panel explicitly opaque with stable white background, text color, border, and viewport-height sizing.
+
+### Verification
+
+- Confirmed `npm run lint` passes.
+- Confirmed `npm run build` passes.
+
 ## 2026-05-12 - v0.2.1: Articles Route Patch
 
 ### Version

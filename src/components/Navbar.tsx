@@ -142,7 +142,7 @@ export default function Navbar(): JSX.Element {
 
             {/* Mobile drawer */}
             <div
-                className={`fixed inset-0 z-30 transition ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}
+                className={`fixed inset-0 z-50 transition ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}
                 aria-hidden={!open}
             >
                 {/* Backdrop */}
@@ -152,7 +152,7 @@ export default function Navbar(): JSX.Element {
                 />
                 {/* Panel */}
                 <aside
-                    className={`absolute left-0 top-0 h-full w-80 bg-white shadow-xl transition-transform ${open ? 'translate-x-0' : '-translate-x-full'
+                    className={`absolute left-0 top-0 z-10 min-h-dvh w-80 max-w-[86vw] border-r border-edubot-line bg-white text-edubot-ink opacity-100 shadow-xl transition-transform ${open ? 'translate-x-0' : '-translate-x-full'
                         }`}
                 >
                     <div className="flex items-center justify-between px-4 py-4 border-b">
