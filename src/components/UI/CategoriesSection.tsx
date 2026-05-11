@@ -14,10 +14,10 @@ type Category = { id: number; title: string; image: string; url: string };
 // expect CATEGORIES to be provided from parent/file scope
 
 const CATEGORIES: Category[] = [
-    { id: 1, title: 'Higher Education', image: category_1, url: '/catalog?category=higher-education' },
-    { id: 2, title: 'Management Books', image: category_2, url: '/catalog?category=management' },
-    { id: 3, title: 'Engineering Books', image: category_3, url: '/catalog?category=engineering' },
-    { id: 4, title: 'Literature', image: category_4, url: '/catalog?category=literature' },
+    { id: 1, title: 'Программалоо жана IT', image: category_1, url: '/catalog?bookType=PROGRAMMING' },
+    { id: 2, title: 'Англис тили', image: category_2, url: '/catalog?bookType=LANGUAGE_LEARNING' },
+    { id: 3, title: 'Экзаменге даярдык', image: category_3, url: '/catalog?bookType=EXAM_PREP' },
+    { id: 4, title: 'Балдар билими', image: category_4, url: '/catalog?bookType=CHILDREN_EDUCATION' },
 ];
 
 export default function CategoriesSection(): JSX.Element {
@@ -33,26 +33,26 @@ export default function CategoriesSection(): JSX.Element {
                         <div className="mb-3 flex items-center gap-3">
                             <span className="h-[2px] w-10 bg-primary" />
                             <span className="text-sm font-semibold tracking-widest text-primary uppercase">
-                                Categories
+                                Категориялар
                             </span>
                         </div>
-                        <h2 className="text-3xl font-extrabold leading-tight text-dark md:text-[40px]">
-                            Explore our Top Categories
+                        <h2 className="text-3xl font-semibold leading-tight text-edubot-ink md:text-[40px]">
+                            Окуу максаты боюнча тандаңыз
                         </h2>
                     </div>
 
                     <div className="hidden items-center gap-4 md:flex">
                         <button
                             ref={prevRef}
-                            aria-label="Previous categories"
-                            className="grid h-12 w-12 place-items-center rounded-full border border-border bg-white text-dark hover:text-primary hover:border-primary transition"
+                            aria-label="Мурунку категориялар"
+                            className="grid h-12 w-12 place-items-center rounded-full border border-edubot-line bg-white text-edubot-ink transition hover:border-primary hover:text-primary"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             ref={nextRef}
-                            aria-label="Next categories"
-                            className="grid h-12 w-12 place-items-center rounded-full border border-border bg-white text-white bg-primary hover:bg-primary-dark transition"
+                            aria-label="Кийинки категориялар"
+                            className="grid h-12 w-12 place-items-center rounded-full bg-primary text-white shadow-edubot-soft transition hover:bg-primary-dark"
                         >
                             <ChevronRight size={20} />
                         </button>
@@ -90,7 +90,7 @@ export default function CategoriesSection(): JSX.Element {
                                         loading="lazy"
                                     />
                                 </div>
-                                <div className="mt-5 text-center text-2xl font-semibold text-dark">
+                                <div className="mt-5 text-center text-2xl font-semibold text-edubot-ink">
                                     {c.title}
                                 </div>
                             </a>
@@ -102,9 +102,9 @@ export default function CategoriesSection(): JSX.Element {
                 <div className="mt-12 flex justify-center">
                     <a
                         href="/catalog"
-                        className="inline-flex items-center gap-3 rounded-xl border border-dark px-8 py-3 text-dark hover:border-primary hover:text-primary transition"
+                        className="dashboard-button-secondary inline-flex items-center gap-3"
                     >
-                        <span className="text-sm font-semibold tracking-widest">VIEW MORE</span>
+                        <span className="text-sm font-semibold tracking-widest">КӨБҮРӨӨК КӨРҮҮ</span>
                         <ArrowRight size={16} />
                     </a>
                 </div>

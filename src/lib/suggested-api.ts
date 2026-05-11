@@ -1,4 +1,4 @@
-import { api } from "./api";
+import { api, type HomepagePayload } from "./api";
 import type { Book, Category, Author, Paginated } from './types';
 
 function unwrap<T>(res: { data: T }) {
@@ -56,7 +56,7 @@ export async function updateStoreInfo(payload: {
 }) {
     return unwrap(await api.put('/admin/store-info', payload));
 }
-export async function previewHomepage(payload: any) {
+export async function previewHomepage(payload: HomepagePayload) {
     // server returns the shaped homepage as it would render (without persisting)
     return unwrap(await api.post('/admin/homepage/preview', payload));
 }

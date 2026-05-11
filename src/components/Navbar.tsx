@@ -1,53 +1,53 @@
 import { useState, type JSX } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { User as UserIcon, ShoppingBag, Heart, Menu, X, LogOut, Settings } from 'lucide-react';
+import { User as UserIcon, ShoppingBag, Menu, X, LogOut, Settings, BookOpen } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useCart } from '../hooks/useCart';
 import bookstore_logo from '../assets/bookstore_logo.svg';
 
 type NavItem = { to: string; label: string; end?: boolean };
 
 const navItems: NavItem[] = [
-    { to: '/', label: 'HOME', end: true },
-    { to: '/about', label: 'ABOUT US' },
-    { to: '/catalog', label: 'BOOKS' },
-    { to: '/new', label: 'NEW RELEASE' },
-    { to: '/contact', label: 'CONTACT US' },
-    { to: '/blog', label: 'BLOG' },
+    { to: '/', label: 'Башкы бет', end: true },
+    { to: '/catalog', label: 'Китептер' },
+    { to: '/cart', label: 'Себет' },
 ];
 
 export default function Navbar(): JSX.Element {
     const { user, logout } = useAuth();
+    const { count } = useCart();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
-    const linkBase =
-        'px-3 text-sm tracking-[0.2em] font-semibold text-black/90 hover:text-black';
-    const active = 'text-primary';
+    const linkBase = 'rounded-full px-4 py-2 text-sm font-semibold text-edubot-ink/80 transition hover:bg-edubot-surfaceAlt hover:text-edubot-dark';
+    const active = 'bg-edubot-orange/10 text-edubot-orange';
 
     const closeDrawer = () => setOpen(false);
 
     return (
-        <nav className="sticky top-0 z-20 bg-white border-b">
-            <div className="mx-auto flex max-w-6xl items-center justify-between py-3 px-4 md:px-0">
+        <nav className="sticky top-0 z-20 border-b border-edubot-line/80 bg-white/95 backdrop-blur">
+            <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
                 {/* Left: logo + mobile trigger */}
                 <div className="flex items-center gap-3">
                     <button
-                        className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-                        aria-label="Open menu"
+                        className="rounded-lg p-2 hover:bg-edubot-surfaceAlt md:hidden"
+                        aria-label="Менюну ачуу"
                         onClick={() => setOpen(true)}
                     >
                         <Menu size={22} />
                     </button>
-                    <Link to="/" className="shrink-0">
-                        <img src={bookstore_logo} alt="Bookstore Logo" className="h-16 w-16 rounded-full bg-primary-dark" aria-label="Logo" />
+                    <Link to="/" className="flex shrink-0 items-center gap-3">
+                        <img src={bookstore_logo} alt="EduBook" className="h-12 w-12 rounded-full bg-edubot-dark" />
+                        <div className="hidden leading-tight sm:block">
+                            <div className="text-lg font-bold text-edubot-dark">EduBook</div>
+                            <div className="text-xs font-medium text-edubot-muted">Окуу китептери дүкөнү</div>
+                        </div>
                     </Link>
                 </div>
 
-                {/* Center: desktop nav with dividers */}
-                <div className="hidden items-center gap-0 md:flex">
-                    {navItems.map((item, i) => (
+                <div className="hidden items-center gap-1 md:flex">
+                    {navItems.map((item) => (
                         <div key={item.to} className="flex items-center">
-                            {i !== 0 && <span className="mx-3 h-6 w-px bg-gray-300" />}
                             <NavLink
                                 to={item.to}
                                 end={item.end}
@@ -59,26 +59,21 @@ export default function Navbar(): JSX.Element {
                     ))}
                 </div>
 
-                {/* Right: account/cart/wishlist */}
-                <div className="hidden items-center gap-5 md:flex">
+                <div className="hidden items-center gap-3 md:flex">
                     {!user ? (
                         <>
-                            <NavLink to="/login" className="text-[#37327A] hover:opacity-80" aria-label="Login">
+                            <NavLink to="/login" className="grid h-10 w-10 place-items-center rounded-full border border-edubot-line text-edubot-dark hover:border-edubot-orange hover:text-edubot-orange" aria-label="Кирүү">
                                 <UserIcon size={20} />
                             </NavLink>
-                            <span className="h-6 w-px bg-gray-300" />
-                            <NavLink to="/cart" className="text-[#37327A] hover:opacity-80" aria-label="Cart">
+                            <NavLink to="/cart" className="relative grid h-10 w-10 place-items-center rounded-full border border-edubot-line text-edubot-dark hover:border-edubot-orange hover:text-edubot-orange" aria-label="Себет">
                                 <ShoppingBag size={20} />
-                            </NavLink>
-                            <span className="h-6 w-px bg-gray-300" />
-                            <NavLink to="/wishlist" className="text-[#37327A] hover:opacity-80" aria-label="Wishlist">
-                                <Heart size={20} />
+                                {count > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] text-white">{count}</span>}
                             </NavLink>
                             <NavLink
                                 to="/register"
-                                className="ml-4 rounded-3xl bg-primary px-4 py-2 text-white text-xs tracking-wide hover:bg-primary-dark"
+                                className="rounded-full bg-primary px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-white shadow-edubot-soft hover:bg-primary-dark"
                             >
-                                REGISTER
+                                Катталуу
                             </NavLink>
                         </>
                     ) : (
@@ -87,14 +82,14 @@ export default function Navbar(): JSX.Element {
                             <div className="relative">
                                 <button
                                     onClick={() => setProfileOpen((v) => !v)}
-                                    className="flex items-center gap-2 rounded-full border border-gray-200 px-2 py-1 hover:bg-gray-50"
+                                    className="flex items-center gap-2 rounded-full border border-edubot-line px-2 py-1 hover:bg-edubot-surfaceAlt"
                                 >
                                     <img
                                         src={user.avatarUrl || 'https://placehold.co/32x32?text=U'}
-                                        alt="avatar"
+                                        alt="Профиль сүрөтү"
                                         className="h-7 w-7 rounded-full object-cover"
                                     />
-                                    <span className="text-sm font-medium">{user.fullName || 'Profile'}</span>
+                                    <span className="text-sm font-medium">{user.fullName || 'Профиль'}</span>
                                 </button>
                                 {profileOpen && (
                                     <div
@@ -106,21 +101,14 @@ export default function Navbar(): JSX.Element {
                                             className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-sm"
                                             onClick={() => setProfileOpen(false)}
                                         >
-                                            <UserIcon size={16} /> Profile
-                                        </Link>
-                                        <Link
-                                            to="/profile/settings"
-                                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-sm"
-                                            onClick={() => setProfileOpen(false)}
-                                        >
-                                            <Settings size={16} /> Settings
+                                            <UserIcon size={16} /> Профиль
                                         </Link>
                                         {user?.role === 'admin' && <Link
                                             to="/admin"
                                             className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-sm"
                                             onClick={() => setProfileOpen(false)}
                                         >
-                                            <Settings size={16} /> Admin
+                                            <Settings size={16} /> Башкаруу
                                         </Link>}
                                         <button
                                             className="flex w-full items-center gap-2 px-4 py-2 hover:bg-gray-50 text-left text-sm"
@@ -130,19 +118,15 @@ export default function Navbar(): JSX.Element {
                                                 navigate('/');
                                             }}
                                         >
-                                            <LogOut size={16} /> Logout
+                                            <LogOut size={16} /> Чыгуу
                                         </button>
                                     </div>
                                 )}
                             </div>
 
-                            <span className="h-6 w-px bg-gray-300" />
-                            <NavLink to="/cart" className="text-[#37327A] hover:opacity-80" aria-label="Cart">
+                            <NavLink to="/cart" className="relative grid h-10 w-10 place-items-center rounded-full border border-edubot-line text-edubot-dark hover:border-edubot-orange hover:text-edubot-orange" aria-label="Себет">
                                 <ShoppingBag size={20} />
-                            </NavLink>
-                            <span className="h-6 w-px bg-gray-300" />
-                            <NavLink to="/wishlist" className="text-[#37327A] hover:opacity-80" aria-label="Wishlist">
-                                <Heart size={20} />
+                                {count > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] text-white">{count}</span>}
                             </NavLink>
                         </>
                     )}
@@ -166,10 +150,13 @@ export default function Navbar(): JSX.Element {
                 >
                     <div className="flex items-center justify-between px-4 py-4 border-b">
                         <div className="flex items-center gap-2">
-                            <div className="h-10 w-10 rounded-full bg-gray-300" />
-                            <span className="font-semibold">EduBook</span>
+                            <img src={bookstore_logo} alt="EduBook" className="h-10 w-10 rounded-full bg-edubot-dark" />
+                            <div>
+                                <span className="block font-semibold text-edubot-dark">EduBook</span>
+                                <span className="text-xs text-edubot-muted">Окуу үчүн китептер</span>
+                            </div>
                         </div>
-                        <button className="p-2 rounded-lg hover:bg-gray-100" onClick={closeDrawer} aria-label="Close menu">
+                        <button className="p-2 rounded-lg hover:bg-gray-100" onClick={closeDrawer} aria-label="Менюну жабуу">
                             <X size={20} />
                         </button>
                     </div>
@@ -179,14 +166,14 @@ export default function Navbar(): JSX.Element {
                         {!user ? (
                             <div className="flex gap-2">
                                 <Link to="/login" onClick={closeDrawer} className="w-1/2 rounded-xl border px-4 py-2 text-center">
-                                    Login
+                                    Кирүү
                                 </Link>
                                 <Link
                                     to="/register"
                                     onClick={closeDrawer}
                                     className="w-1/2 rounded-xl bg-primary px-4 py-2 text-center text-white"
                                 >
-                                    Register
+                                    Катталуу
                                 </Link>
                             </div>
                         ) : (
@@ -198,7 +185,7 @@ export default function Navbar(): JSX.Element {
                                 <div>
                                     <div className="font-medium">{user.fullName}</div>
                                     <Link to="/profile" onClick={closeDrawer} className="text-sm text-primary">
-                                        View profile
+                                        Профилди көрүү
                                     </Link>
                                 </div>
                             </div>
@@ -220,15 +207,16 @@ export default function Navbar(): JSX.Element {
                                 {n.label}
                             </NavLink>
                         ))}
-                        <div className="mt-2 grid grid-cols-3 gap-2">
-                            <Link to="/account" onClick={closeDrawer} className="rounded-lg border py-2 text-center">
+                        <div className="mt-2 grid grid-cols-4 gap-2">
+                            <Link to="/profile" onClick={closeDrawer} className="rounded-lg border py-2 text-center">
                                 <UserIcon className="inline-block" size={18} />
                             </Link>
                             <Link to="/cart" onClick={closeDrawer} className="rounded-lg border py-2 text-center">
                                 <ShoppingBag className="inline-block" size={18} />
+                                {count > 0 && <span className="ml-1 text-xs text-primary">{count}</span>}
                             </Link>
-                            <Link to="/wishlist" onClick={closeDrawer} className="rounded-lg border py-2 text-center">
-                                <Heart className="inline-block" size={18} />
+                            <Link to="/catalog" onClick={closeDrawer} className="rounded-lg border py-2 text-center">
+                                <BookOpen className="inline-block" size={18} />
                             </Link>
                         </div>
 
@@ -241,7 +229,7 @@ export default function Navbar(): JSX.Element {
                                     location.href = '/';
                                 }}
                             >
-                                Logout
+                                Чыгуу
                             </button>
                         )}
                     </nav>

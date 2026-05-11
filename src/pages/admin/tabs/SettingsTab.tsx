@@ -1,55 +1,47 @@
-import React from "react";
+import { Settings } from "lucide-react";
 import Section from "../ui/Section";
 import Field from "../ui/Field";
-import { TextInput, Button, TextArea } from "../ui/Inputs";
-import { api } from "../../../lib/api";
+import { TextInput, TextArea } from "../ui/Inputs";
 import type { StoreSettings } from "./../types";
 
-async function getSettings() {
-    const { data } = await api.get('/admin/settings');
-    return data as StoreSettings;
-}
-async function saveSettings(body: StoreSettings) {
-    const { data } = await api.put('/admin/settings', body);
-    return data as StoreSettings;
-}
-
 function SettingsTab() {
-    const [data, setData] = React.useState<StoreSettings>({ telegram: {} });
-    const [loading, setLoading] = React.useState(true);
-    const [saving, setSaving] = React.useState(false);
-
-    React.useEffect(() => { (async () => { try { setData(await getSettings()); } finally { setLoading(false); } })(); }, []);
-
-    const update = (patch: Partial<StoreSettings>) => setData(prev => ({ ...(prev || {}), ...patch }));
-
-    const save = async () => { setSaving(true); try { await saveSettings(data); } finally { setSaving(false); } };
-
-    if (loading) return <div className="text-text-muted">Loading…</div>;
+    const data: StoreSettings = {
+        storeName: 'EduBook',
+        pickupAddress: 'Киев көчөсү 115, Бишкек',
+        phones: ['+996 700 123 456'],
+        telegram: {},
+    };
 
     return (
         <div className="grid gap-4 md:grid-cols-2">
-            <Section title="Store Profile">
+            <div className="md:col-span-2 rounded-2xl border border-edubot-line bg-edubot-surfaceAlt p-4 text-sm leading-6 text-edubot-muted">
+                Дүкөн жөндөөлөрү азырынча базага сакталбайт. Операциялык маалыматтарды азырынча чөйрө жөндөөлөрүндө калтырыңыз; EduBot, EduPro, CRM жана билдирүү интеграциялары кийинки этапка калтырылган.
+            </div>
+            <Section title="Дүкөн профили">
                 <div className="grid gap-3">
-                    <Field label="Store Name"><TextInput value={data.storeName || ''} onChange={(e) => update({ storeName: e.target.value })} /></Field>
-                    <Field label="Pickup Address"><TextArea value={data.pickupAddress || ''} onChange={(e) => update({ pickupAddress: e.target.value })} /></Field>
-                    <Field label="Phone(s)" hint="Comma-separated">
-                        <TextInput value={(data.phones || []).join(', ')} onChange={(e) => update({ phones: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })} />
+                    <Field label="Дүкөндүн аталышы"><TextInput value={data.storeName || ''} readOnly /></Field>
+                    <Field label="Өзү алып кетүү дареги"><TextArea value={data.pickupAddress || ''} readOnly /></Field>
+                    <Field label="Телефон номерлери" hint="Үтүр менен бөлүп жазыңыз">
+                        <TextInput value={(data.phones || []).join(', ')} readOnly />
                     </Field>
                 </div>
             </Section>
 
             <Section title="Telegram">
                 <div className="grid gap-3">
-                    <Field label="Bot Token"><TextInput value={data.telegram?.botToken || ''} onChange={(e) => update({ telegram: { ...(data.telegram || {}), botToken: e.target.value } })} /></Field>
-                    <Field label="Public Channel ID"><TextInput value={data.telegram?.publicChannelId || ''} onChange={(e) => update({ telegram: { ...(data.telegram || {}), publicChannelId: e.target.value } })} /></Field>
-                    <Field label="Admin Chat ID"><TextInput value={data.telegram?.adminChatId || ''} onChange={(e) => update({ telegram: { ...(data.telegram || {}), adminChatId: e.target.value } })} /></Field>
-                    <div className="text-xs text-text-muted">Use this to publish new books & notify order events.</div>
+                    <div className="rounded-2xl border border-edubot-line bg-edubot-surfaceAlt p-4 text-sm leading-6 text-edubot-muted">
+                            Telegram билдирүү жөндөөлөрү милдеттүү эмес жана кийинки этапка калтырылган EduBot/EduPro/CRM интеграцияларынан өзүнчө.
+                    </div>
+                    <Field label="Бот токени"><TextInput value={data.telegram?.botToken || ''} readOnly placeholder="Жөндөлгөн эмес" /></Field>
+                    <Field label="Коомдук канал ID"><TextInput value={data.telegram?.publicChannelId || ''} readOnly placeholder="Жөндөлгөн эмес" /></Field>
+                    <Field label="Башкаруучу чат ID"><TextInput value={data.telegram?.adminChatId || ''} readOnly placeholder="Жөндөлгөн эмес" /></Field>
+                    <div className="text-xs text-edubot-muted">Бул жөндөөнү дүкөн билдирүүлөрү иштетилгенде гана колдонуңуз.</div>
                 </div>
             </Section>
 
-            <div className="md:col-span-2 flex justify-end">
-                <Button onClick={save} disabled={saving} className="bg-dark text-white">{saving ? 'Saving…' : 'Save Settings'}</Button>
+            <div className="md:col-span-2 flex items-center gap-2 rounded-2xl border border-edubot-line bg-white p-4 text-sm text-edubot-muted">
+                <Settings className="h-4 w-4 text-edubot-orange" aria-hidden="true" />
+                Сервер аркылуу сакталган жөндөөлөр операциялык талаптар такталганда кийинки жаңыртууда кошулат.
             </div>
         </div>
     );

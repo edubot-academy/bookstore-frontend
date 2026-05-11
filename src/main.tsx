@@ -5,6 +5,7 @@ import { queryClient } from './app/queryClient';
 import App from './app/routes';
 import './index.css';
 import { AuthProvider } from './hooks/useAuth';
+import { CartProvider } from './hooks/useCart';
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <App />
+          <CartProvider>
+            <App />
+          </CartProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>

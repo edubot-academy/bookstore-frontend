@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -22,7 +22,9 @@ const MainLayout: React.FC<React.PropsWithChildren<MainLayoutProps>> = ({
 
             {/* Page content */}
             <main className={mainClassName ?? ''}>
-                <Outlet />
+                <Suspense fallback={<PageFallback />}>
+                    <Outlet />
+                </Suspense>
             </main>
 
             <Footer />
@@ -31,3 +33,20 @@ const MainLayout: React.FC<React.PropsWithChildren<MainLayoutProps>> = ({
 };
 
 export default MainLayout;
+
+function PageFallback() {
+    return (
+        <div className="mx-auto max-w-6xl px-4 py-12">
+            <div className="animate-pulse rounded-2xl border border-edubot-line bg-white p-6 shadow-sm">
+                <div className="h-5 w-36 rounded bg-edubot-line" />
+                <div className="mt-5 h-9 w-2/3 max-w-xl rounded bg-edubot-line" />
+                <div className="mt-4 h-4 w-full max-w-2xl rounded bg-edubot-line" />
+                <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <div key={index} className="h-40 rounded-xl bg-edubot-surfaceAlt" />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}

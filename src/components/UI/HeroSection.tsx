@@ -1,137 +1,50 @@
-import { type JSX, useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay, A11y } from 'swiper/modules';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { type JSX, type ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, BookOpen, CheckCircle2, GraduationCap, PackageCheck } from 'lucide-react';
 import heroBook from '../../assets/hero-book.png';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-
-interface HeroSlide {
-    title: string;
-    paragraph: string;
-    ctaText: string;
-    ctaUrl: string;
-    img: string;
-}
-
-const HERO_SLIDES: HeroSlide[] = [
-    {
-        title: 'Ipsum Dolor Si',
-        paragraph:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero ipsum enim pharetra hac. Urna commodo, lacus ut magna velit eleifend.',
-        ctaText: 'READ MORE',
-        ctaUrl: '/catalog',
-        img: heroBook,
-    },
-    {
-        title: 'The Assignment',
-        paragraph: 'A bright, engaging novel to spark your imagination and curiosity every day.',
-        ctaText: 'READ MORE',
-        ctaUrl: '/catalog',
-        img: heroBook,
-    },
-];
-
 export default function HeroSection(): JSX.Element {
-    const prevRef = useRef<HTMLButtonElement | null>(null);
-    const nextRef = useRef<HTMLButtonElement | null>(null);
-
     return (
-        <section className="w-full bg-gradient-to-tr from-secondary via-white to-white">
-            <div className="relative">
-                {/* Custom arrows */}
-                <button
-                    ref={prevRef}
-                    aria-label="Previous slide"
-                    title="Previous"
-                    className={[
-                        // position
-                        'absolute left-3 top-1/2 -translate-y-1/2 z-10',
-                        // shape
-                        'grid h-12 w-12 place-items-center rounded-full border border-primary bg-white',
-                        // visuals
-                        'text-primary shadow/50 shadow-sm backdrop-blur',
-                        // states
-                        'transition transform hover:scale-[1.04] hover:shadow-md active:scale-95',
-                        // accessibility focus
-                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
-                        // small screens: slightly smaller
-                        'md:h-12 md:w-12 h-10 w-10',
-                    ].join(' ')}
-                >
-                    <ChevronLeft size={20} strokeWidth={2.25} />
-                </button>
-
-                <button
-                    ref={nextRef}
-                    aria-label="Next slide"
-                    title="Next"
-                    className={[
-                        'absolute right-3 top-1/2 -translate-y-1/2 z-10',
-                        'grid h-12 w-12 place-items-center rounded-full border border-primary bg-white',
-                        'text-primary shadow/50 shadow-sm backdrop-blur',
-                        'transition transform hover:scale-[1.04] hover:shadow-md active:scale-95',
-                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40',
-                        'md:h-12 md:w-12 h-10 w-10',
-                    ].join(' ')}
-                >
-                    <ChevronRight size={20} strokeWidth={2.25} />
-                </button>
-
-                <Swiper
-                    modules={[Navigation, Pagination, Autoplay, A11y]}
-                    pagination={{ clickable: true }}
-                    autoplay={{ delay: 5000 }}
-                    loop
-                    onBeforeInit={(swiper) => {
-                        // @ts-expect-error: swiper types allow these at runtime
-                        swiper.params.navigation.prevEl = prevRef.current;
-                        // @ts-expect-error
-                        swiper.params.navigation.nextEl = nextRef.current;
-                    }}
-                    navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
-                    className={[
-                        // pagination styling
-                        '[&_.swiper-pagination-bullet]:!h-3 [&_.swiper-pagination-bullet]:!w-3',
-                        '[&_.swiper-pagination-bullet]:!bg-gray-300',
-                        '[&_.swiper-pagination-bullet-active]:!bg-primary',
-                        '[&_.swiper-pagination]:!bottom-6',
-                    ].join(' ')}
-                >
-                    {HERO_SLIDES.map((s, idx) => (
-                        <SwiperSlide key={idx}>
-                            <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-16 md:grid-cols-2 md:px-12">
-                                {/* text */}
-                                <div className="order-2 md:order-1">
-                                    <h1 className="mb-4 text-4xl font-extrabold leading-tight text-dark md:text-6xl">
-                                        {s.title}
-                                    </h1>
-                                    <p className="mb-8 max-w-xl text-lg leading-8 text-text-muted">{s.paragraph}</p>
-                                    <a
-                                        href={s.ctaUrl}
-                                        className="inline-flex items-center gap-3 rounded-xl border border-dark px-6 py-3 text-dark transition-colors hover:border-primary hover:text-primary"
-                                    >
-                                        <span className="text-sm font-semibold tracking-widest">{s.ctaText}</span>
-                                        <ArrowRight size={16} />
-                                    </a>
-                                </div>
-
-                                {/* image */}
-                                <div className="order-1 flex justify-center md:order-2">
-                                    <img
-                                        src={s.img}
-                                        alt={s.title}
-                                        className="h-[320px] w-auto object-contain md:h-[500px]"
-                                        loading="lazy"
-                                    />
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+        <section className="bg-edubot-surface">
+            <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 md:grid-cols-[1.05fr_0.95fr] md:py-16">
+                <div>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-edubot-orange/20 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-edubot-orange">
+                        <GraduationCap size={14} /> EduBook MVP
+                    </div>
+                    <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-tight text-edubot-dark md:text-6xl">
+                        Окуучулар, ата-энелер жана окуу борборлору үчүн китептер.
+                    </h1>
+                    <p className="mt-5 max-w-2xl text-base leading-8 text-edubot-muted md:text-lg">
+                        Окуу материалдарын предмет, тил, деңгээл жана курс муктаждыгы боюнча тандаңыз. Онлайн буйрутма берип, алып кетүү же жеткирүүнү командабыз менен тактаңыз.
+                    </p>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                        <Link to="/catalog" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-edubot-soft hover:bg-primary-dark">
+                            Китептерди көрүү <ArrowRight size={16} />
+                        </Link>
+                        <Link to="/bundles" className="inline-flex items-center gap-2 rounded-full border border-edubot-line bg-white px-6 py-3 text-sm font-semibold text-edubot-dark hover:border-edubot-orange hover:text-edubot-orange">
+                            Курс топтомдору
+                        </Link>
+                    </div>
+                    <div className="mt-8 grid gap-3 text-sm text-edubot-ink sm:grid-cols-3">
+                        <TrustItem icon={<BookOpen size={18} />} label="Окууга багытталган каталог" />
+                        <TrustItem icon={<PackageCheck size={18} />} label="Өзү алып кетүү же жеткирүү" />
+                        <TrustItem icon={<CheckCircle2 size={18} />} label="WhatsApp аркылуу ырастоо" />
+                    </div>
+                </div>
+                <div className="relative">
+                    <div className="absolute inset-x-8 bottom-3 h-16 rounded-full bg-edubot-orange/20 blur-2xl" />
+                    <img src={heroBook} alt="Окуу китептери" className="relative mx-auto max-h-[460px] w-auto object-contain" />
+                </div>
             </div>
         </section>
+    );
+}
+
+function TrustItem({ icon, label }: { icon: ReactNode; label: string }) {
+    return (
+        <div className="flex items-center gap-2 rounded-xl border border-edubot-line bg-white/80 px-3 py-2 shadow-sm">
+            <span className="text-edubot-green">{icon}</span>
+            <span className="font-medium">{label}</span>
+        </div>
     );
 }

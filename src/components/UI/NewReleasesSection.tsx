@@ -1,128 +1,59 @@
-import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import BookCard from "../BookCard";
-import new_book_1 from "../../assets/new_book_1.png";
-import new_book_2 from "../../assets/new_book_2.png";
-import new_book_3 from "../../assets/new_book_3.png";
-import new_book_4 from "../../assets/new_book_4.png";
-import type { Book } from "../../lib/types";
-
-const NEW_RELEASES: Book[] = [
-    {
-        id: 1,
-        title: "Simple Way Of Piece Life",
-        author: "Armor Ramsey",
-        price: 4000,
-        image: new_book_1, url: "/books/1",
-        isSale: true
-    },
-    {
-        id: 2,
-        title: "Great Travel At Desert",
-        author: "Sanchit Howdy",
-        price: 3800,
-        image: new_book_2,
-        url: "/books/2"
-
-    },
-    {
-        id: 3,
-        title: "The Lady Beauty Scarlett",
-        author: "Arthur Doyle",
-        price: 4500,
-        image: new_book_3,
-        url: "/books/3"
-
-    },
-    {
-        id: 4,
-        title: "Once Upon A Time",
-        author: "Klien Marry",
-        price: 3500,
-        image: new_book_4,
-        url: "/books/4"
-
-    },
-];
-
+import { listBooks } from "../../lib/api";
 
 export default function NewReleasesSection() {
-    const scrollerRef = React.useRef<HTMLDivElement | null>(null);
-    const [page, setPage] = React.useState(0);
-
-    React.useEffect(() => {
-        const el = scrollerRef.current;
-        if (!el) return;
-        const onScroll = () => {
-            const cardWidth = el.firstElementChild ? (el.firstElementChild as HTMLElement).offsetWidth + 16 : 1;
-            setPage(Math.round(el.scrollLeft / cardWidth));
-        };
-        el.addEventListener("scroll", onScroll, { passive: true });
-        return () => el.removeEventListener("scroll", onScroll);
-    }, []);
-
-    const scrollTo = (idx: number) => {
-        const el = scrollerRef.current;
-        if (!el) return;
-        const card = el.children[idx] as HTMLElement | undefined;
-        if (card) el.scrollTo({ left: card.offsetLeft - 16, behavior: "smooth" });
-    };
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["home-new-books"],
+        queryFn: () => listBooks({ page: 1, limit: 4, sort: "new" }),
+    });
+    const books = data?.items ?? [];
 
     return (
-        <section className="bg-secondary">
+        <section className="bg-white">
             <div className="mx-auto max-w-6xl px-4 py-16">
-                <div className="mb-10 text-center">
-                    <div className="relative mx-auto mb-4 flex items-center justify-center">
-                        <span className="h-px w-24 bg-border" />
-                        <span className="mx-4 text-[11px] uppercase tracking-[0.25em] text-text-muted">
-                            Some Quality Items
-                        </span>
-                        <span className="h-px w-24 bg-border" />
-                    </div>
-                    <h2 className="text-3xl font-extrabold tracking-tight text-dark md:text-[40px]">
-                        New Release Books
-                    </h2>
-                </div>
-
-                {/* desktop grid */}
-                <div className="hidden gap-6 md:grid md:grid-cols-4">
-                    {NEW_RELEASES.map((b) => (
-                        <BookCard key={b.id} b={b} />
-                    ))}
-                </div>
-
-                {/* mobile carousel */}
-                <div
-                    ref={scrollerRef}
-                    className="md:hidden flex gap-4 overflow-x-auto scroll-smooth px-1 pb-2 snap-x snap-mandatory"
-                >
-                    {NEW_RELEASES.map((b) => (
-                        <div key={b.id} className="min-w-[70%] snap-start">
-                            <BookCard b={b} />
+                <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <div className="mb-3 flex items-center gap-3">
+                            <span className="h-[2px] w-10 bg-primary" />
+                            <span className="text-sm font-semibold uppercase tracking-widest text-primary">
+                                Жаңы каталог
+                            </span>
                         </div>
-                    ))}
+                        <h2 className="text-3xl font-semibold tracking-tight text-edubot-ink md:text-[40px]">
+                            Жаңы кошулган окуу китептери
+                        </h2>
+                        <p className="mt-2 max-w-2xl text-sm text-edubot-muted">
+                            EduBook каталогуна жаңы кошулган китептер. Алып кетүү же жеткирүү командабыз менен такталат.
+                        </p>
+                    </div>
+                    <Link to="/catalog?sort=new" className="dashboard-button-secondary inline-flex">
+                        Каталогду көрүү
+                    </Link>
                 </div>
 
-                {/* dots */}
-                <div className="mt-6 flex justify-center gap-3 md:hidden">
-                    {NEW_RELEASES.map((_, i) => (
-                        <button
-                            key={i}
-                            aria-label={`Go to slide ${i + 1}`}
-                            onClick={() => scrollTo(i)}
-                            className={[
-                                "h-2.5 w-2.5 rounded-full transition-all",
-                                page === i ? "bg-primary scale-110" : "bg-text-muted/30",
-                            ].join(" ")}
-                        />
-                    ))}
-                </div>
-
-                {/* footer link */}
-                <div className="mt-10 flex justify-end">
-                    <a href="/catalog?sort=new" className="inline-flex items-center text-sm font-medium text-primary hover:underline">
-                        View All Products <span aria-hidden className="ml-1">→</span>
-                    </a>
-                </div>
+                {isLoading ? (
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {Array.from({ length: 4 }).map((_, index) => (
+                            <div key={index} className="h-[420px] animate-pulse rounded-2xl bg-edubot-surfaceAlt" />
+                        ))}
+                    </div>
+                ) : isError ? (
+                    <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
+                        Китептер азыр жүктөлгөн жок.
+                    </div>
+                ) : books.length === 0 ? (
+                    <div className="rounded-2xl border border-edubot-line bg-edubot-surfaceAlt p-6 text-sm text-edubot-muted">
+                        Бул жерге чыгышы үчүн башкаруу бөлүмүнөн китеп кошуңуз.
+                    </div>
+                ) : (
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        {books.map((book) => (
+                            <BookCard key={book.id} b={book} />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );

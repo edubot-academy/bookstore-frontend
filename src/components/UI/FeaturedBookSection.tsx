@@ -1,4 +1,6 @@
 import React from "react";
+import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
+import { Link } from "react-router-dom";
 import FeaturedBook from "../../assets/featured_book.png";
 
 type Featured = {
@@ -8,119 +10,120 @@ type Featured = {
     price: number;
     image: string;
     url: string;
+    audience: string;
+    subject: string;
     excerpt: string;
 };
-
 
 const FEATURED_ITEMS: Featured[] = [
     {
         id: 1,
-        title: "Birds Gonna Be Happy",
-        author: "Timbur Hood",
+        title: "Веб иштеп чыгуу үчүн баштапкы окуу топтому",
+        author: "EduBook тандоосу",
         price: 4500,
         image: FeaturedBook,
-        url: "/books/featured-1",
-        excerpt: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet, libero ipsum enim pharetra hac.",
+        url: "/catalog?bookType=PROGRAMMING",
+        audience: "Программалоону жаңы баштагандар",
+        subject: "Программалоо",
+        excerpt: "HTML, CSS, JavaScript жана заманбап веб иштеп чыгуунун негиздерин баштаган окуучулар үчүн практикалык тандоо.",
     },
-    { id: 2, title: "Dreams In The Field", author: "Ava Cooper", price: 4200, image: FeaturedBook, url: "/books/featured-2", excerpt: "Etiam porta sem malesuada magna mollis euismod. Vestibulum id ligula porta felis euismod semper." },
-    { id: 3, title: "Morning Coffee Tales", author: "Mason Blake", price: 3900, image: FeaturedBook, url: "/books/featured-3", excerpt: "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet." },
+    {
+        id: 2,
+        title: "Англис тили үчүн негизги китептер",
+        author: "EduBook тандоосу",
+        price: 4200,
+        image: FeaturedBook,
+        url: "/catalog?bookType=LANGUAGE_LEARNING",
+        audience: "Окуучулар жана ата-энелер",
+        subject: "Англис тили",
+        excerpt: "Сөз байлыгын, грамматиканы, окуу көндүмүн жана үйдө үзгүлтүксүз машыгууну өнүктүрүүгө ылайыктуу китептер.",
+    },
+    {
+        id: 3,
+        title: "Экзаменге даярдык үчүн тандоолор",
+        author: "EduBook тандоосу",
+        price: 3900,
+        image: FeaturedBook,
+        url: "/catalog?bookType=EXAM_PREP",
+        audience: "Экзаменге даярданып жаткан окуучулар",
+        subject: "Экзаменге даярдык",
+        excerpt: "Кайталоо, тесттер жана мектеп же тил экзамендерине иреттүү даярдануу үчүн багытталган материалдар.",
+    },
 ];
 
 const formatKgs = (n: number) =>
-    new Intl.NumberFormat("en-US", { style: "currency", currency: "KGS", maximumFractionDigits: 2 }).format(n);
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "KGS", maximumFractionDigits: 0 }).format(n);
 
 const ArrowBtn = ({ onClick, dir }: { onClick: () => void; dir: "prev" | "next" }) => (
     <button
         type="button"
         onClick={onClick}
-        aria-label={dir === "prev" ? "Previous" : "Next"}
-        className="grid h-10 w-10 place-items-center rounded-full border border-primary text-primary transition hover:bg-primary/10"
+        aria-label={dir === "prev" ? "Мурунку сунушталган тандоо" : "Кийинки сунушталган тандоо"}
+        className="grid h-10 w-10 place-items-center rounded-full border border-edubot-line bg-white text-edubot-ink transition hover:border-edubot-orange hover:text-edubot-orange"
     >
-        <span className={dir === "next" ? "rotate-0" : "rotate-180"}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-        </span>
+        {dir === "prev" ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
     </button>
 );
 
 export default function FeaturedBookSection() {
     const [idx, setIdx] = React.useState(0);
     const item = FEATURED_ITEMS[idx];
-    const go = (n: number) => setIdx((p) => (p + n + FEATURED_ITEMS.length) % FEATURED_ITEMS.length);
+    const go = React.useCallback((n: number) => {
+        setIdx((p) => (p + n + FEATURED_ITEMS.length) % FEATURED_ITEMS.length);
+    }, []);
 
     React.useEffect(() => {
-        const h = (e: KeyboardEvent) => {
-            if (e.key === "ArrowLeft") go(-1);
-            if (e.key === "ArrowRight") go(1);
+        const handleKey = (event: KeyboardEvent) => {
+            if (event.key === "ArrowLeft") go(-1);
+            if (event.key === "ArrowRight") go(1);
         };
-        window.addEventListener("keydown", h);
-        return () => window.removeEventListener("keydown", h);
-    }, []);
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, [go]);
 
     return (
         <section className="bg-white">
-            <div className="mx-auto w-full px-4 py-14">
-                <div className="relative rounded-[28px] bg-secondary p-4 shadow-sm ring-1 ring-border md:p-8">
-                    <div className="grid items-center gap-8 md:grid-cols-[1.05fr_1fr]">
-                        {/* left arrow */}
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 md:left-8">
-                            <ArrowBtn dir="prev" onClick={() => go(-1)} />
+            <div className="mx-auto max-w-6xl px-4 py-14">
+                <div className="relative overflow-hidden rounded-2xl border border-edubot-line bg-edubot-surfaceAlt p-5 shadow-edubot-card md:p-8">
+                    <div className="grid items-center gap-8 md:grid-cols-[340px_1fr]">
+                        <div className="rounded-2xl bg-white p-4 shadow-edubot-soft">
+                            <img src={item.image} alt={item.title} className="aspect-[3/4] w-full rounded-xl object-cover" loading="lazy" />
                         </div>
 
-                        {/* book image in white frame */}
-                        <div className="order-1 md:order-none">
-                            <div className="mx-auto w-[86%] rounded-[14px] bg-white p-3 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:w-[90%]">
-                                <img src={item.image} alt={item.title} className="aspect-[3/4] w-full rounded-[10px] object-cover" loading="lazy" />
+                        <div>
+                            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-edubot-orange">Сунушталган окуу тандоосу</p>
+                            <h3 className="mt-3 text-3xl font-semibold leading-tight text-edubot-ink md:text-[40px]">{item.title}</h3>
+                            <p className="mt-2 text-sm font-medium text-edubot-muted">{item.author}</p>
+
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                <span className="rounded-full bg-edubot-orange/10 px-3 py-1 text-xs font-semibold text-edubot-orange">{item.subject}</span>
+                                <span className="rounded-full bg-edubot-teal/10 px-3 py-1 text-xs font-semibold text-edubot-teal">{item.audience}</span>
                             </div>
-                        </div>
 
-                        {/* content */}
-                        <div className="pr-2">
-                            <h3 className="text-[40px] font-extrabold leading-tight text-dark">Featured Book</h3>
+                            <p className="mt-5 max-w-2xl text-sm leading-6 text-edubot-muted">{item.excerpt}</p>
+                            <div className="mt-5 text-2xl font-semibold text-primary">{formatKgs(item.price)}</div>
 
-                            <div className="mt-4">
-                                <div className="flex items-center gap-3">
-                                    <span className="h-[3px] w-14 rounded bg-primary" />
-                                    <span className="text-[11px] tracking-[0.28em] text-text-muted">BY {item.author.toUpperCase()}</span>
+                            <div className="mt-7 flex flex-wrap items-center gap-3">
+                                <Link to={item.url} className="dashboard-button-primary">
+                                    <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+                                    Окшош китептерди көрүү
+                                </Link>
+                                <div className="flex items-center gap-2">
+                                    <ArrowBtn dir="prev" onClick={() => go(-1)} />
+                                    <ArrowBtn dir="next" onClick={() => go(1)} />
                                 </div>
                             </div>
-
-                            <a href={item.url} className="mt-5 block text-2xl font-bold text-dark hover:underline">
-                                {item.title}
-                            </a>
-
-                            <p className="mt-3 max-w-[520px] text-[15px] leading-relaxed text-text-muted">{item.excerpt}</p>
-
-                            <div className="mt-6 text-xl font-extrabold text-primary">{formatKgs(item.price)}</div>
-
-                            <div className="mt-8">
-                                <a
-                                    href={item.url}
-                                    className="inline-flex items-center gap-3 rounded-xl border-2 border-dark px-6 py-3 text-sm font-semibold text-dark transition hover:bg-dark/5"
-                                >
-                                    VIEW MORE
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                        <path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-
-                        {/* right arrow */}
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 md:right-8">
-                            <ArrowBtn dir="next" onClick={() => go(1)} />
                         </div>
                     </div>
 
-                    {/* dots */}
-                    <div className="mt-10 flex justify-center gap-3">
-                        {FEATURED_ITEMS.map((_, i) => (
+                    <div className="mt-8 flex justify-center gap-2">
+                        {FEATURED_ITEMS.map((slide, index) => (
                             <button
-                                key={i}
-                                onClick={() => setIdx(i)}
-                                aria-label={`Go to slide ${i + 1}`}
-                                className={["h-3 w-3 rounded-full transition", i === idx ? "bg-primary" : "bg-text-muted/30"].join(" ")}
+                                key={slide.id}
+                                type="button"
+                                onClick={() => setIdx(index)}
+                                aria-label={`Сунушталган тандоо ${index + 1}`}
+                                className={`h-2.5 rounded-full transition ${index === idx ? "w-8 bg-edubot-orange" : "w-2.5 bg-edubot-line"}`}
                             />
                         ))}
                     </div>

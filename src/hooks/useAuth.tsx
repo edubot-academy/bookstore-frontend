@@ -1,14 +1,7 @@
 import React from 'react';
-import { getMe, login as apiLogin, register as apiRegister, logout as apiLogout, api } from '../lib/api';
+import { getMe, login as apiLogin, register as apiRegister, logout as apiLogout, api, type AuthUser } from '../lib/api';
 
-export type User = {
-    id: number;
-    fullName: string;
-    email: string;
-    avatarUrl?: string | null;
-    phone?: string | null;
-    role?: string;
-};
+export type User = AuthUser;
 
 type AuthContextShape = {
     user: User | null;
@@ -56,29 +49,19 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     }, []);
 
     const login = React.useCallback(async (payload: { email: string; password: string }) => {
-        try {
-            const res = await apiLogin(payload) as any; // expect { token, user? }
-            if (res?.accessToken) setToken(res.accessToken);
-            // Prefer user from login response if present to save a network hop
-            const me: User = res?.user ?? (await getMe());
-            setUser(me as User);
-            return me;
-        } catch (err) {
-            // bubble to UI
-            throw err;
-        }
+        const res = await apiLogin(payload);
+        if (res.accessToken) setToken(res.accessToken);
+        const me: User = res.user ?? (await getMe());
+        setUser(me);
+        return me;
     }, []);
 
     const register = React.useCallback(async (payload: { fullName: string; email: string; password: string; phone?: string }) => {
-        try {
-            const res = await apiRegister(payload) as any; // expect { token, user? }
-            if (res?.accessToken) setToken(res.accessToken);
-            const me: User = res?.user ?? (await getMe());
-            setUser(me as User);
-            return me;
-        } catch (err) {
-            throw err;
-        }
+        const res = await apiRegister(payload);
+        if (res.accessToken) setToken(res.accessToken);
+        const me: User = res.user ?? (await getMe());
+        setUser(me);
+        return me;
     }, []);
 
     const logout = React.useCallback(async () => {
@@ -112,6 +95,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     const ctx = React.useContext(AuthContext);
     if (!ctx) throw new Error('useAuth must be used within <AuthProvider>');
