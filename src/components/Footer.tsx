@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import bookstore_logo from "../assets/bookstore_logo.svg";
+import bookstore_logo from "/bookstore_logo.svg";
 
 export default function Footer() {
     const year = new Date().getFullYear();

@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { User as UserIcon, ShoppingBag, Menu, X, LogOut, Settings, BookOpen } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useCart } from '../hooks/useCart';
-import bookstore_logo from '../assets/bookstore_logo.svg';
+import bookstore_logo from '/bookstore_logo.svg';
 
 type NavItem = { to: string; label: string; end?: boolean };
 
